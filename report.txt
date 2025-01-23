@@ -1,0 +1,12 @@
+Project 4 Report
+----------------------------------------------------------------------------------------
+
+The Big-O for the average cases is the following for these methods:
+
+In GeoDatabase
+	load() - O(N), where N is the number of lines in the file.
+	get_connected_points() - O(1).
+	get_street_name() - O(1).
+
+In Router
+	route() - O(NlogN), where N is the number of points/nodes in the geopoint map.
