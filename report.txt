@@ -1,0 +1,297 @@
+Project 4 Report
+
+-------------------------------------------------------------------------------------------------
+1.) Obstacles
+
+* Testing the flip function - I thought my code was wrong when testing my flip function with multiple tests at once. However, I eventually realized that the elements of the array were changing with each test done, since the array gets changed in the function (and not a const), and that was why I did not get the outcomes I expected. So, I separated the test cases to avoid this issue and make it clear what is being changed in each test.
+
+* I also had trouble with identifying all possible test cases with circleLeft. The Q&A during lecture helped me realize there were more gaps I needed to fill in order to avoid undefined behavior and identify when to return an error or not.
+
+* For the subsequence function, I had trouble figuring out where to start. So, I wrote down what I needed to do and what I needed to cover for the errors, then broke them down into steps I could code.
+
+* The divide function - I had issues with changing the array correctly. First, I tried using multiple for loops (to first put elements less than divider in the indexes near the beginning of array, then equal to divider, and then greater than divider). But, that process was lengthy and unnecessarily complicated, and I also ran into errors with sorting the array correctly. So, I decided to approach the function by alphabetically organizing the array and then identifying what index to return. This made the process easier.
+
+-------------------------------------------------------------------------------------------------
+2.) Test Data
+
+** reduplicate Function ** 
+Test 1: Checks that reduplicate returns correct index and changes array as expected.
+    string h[7] = { "moo", "hoot", "shoo", "yip", "", "do", "mi" };
+    assert(reduplicate(h, 7) == 7 && h[0] == "moomoo" && h[6] == "mimi" && h[4] == "");
+    cerr << "Test succeeded!" << endl;
+
+Test 2: Checks that reduplicate returns correct index and does nothing if there are 0 array elements.
+    string h[0] = {};
+    assert(reduplicate(h, 0) == 0);
+    cerr << "Test succeeded!" << endl;
+
+Test 3: Checks that reduplicate returns -1 if passed negative elements.
+    string h[3];
+    assert(reduplicate(h, -1) == -1);
+    cerr << "Test succeeded!" << endl;
+
+** locate Function ** 
+Test 4: Checks that locate returns correct index or error if not find target in elements passed.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris", "donald" };
+    assert(locate(h, 7, "chris") == 5);
+    assert(locate(h, 7, "asa") == 2);
+    assert(locate(h, 2, "asa") == -1);
+    cerr << "Test succeeded :)" << endl;
+
+Test 5: Checks that locate returns correct index if at first or last element.
+    string i[5] = {"", "soap", "water", "can", "tie"};
+    assert(locate(i, 1, "") == 0);
+    assert(locate(i, 5, "tie") == 4);
+    cerr << "Test succeeded :)" << endl;
+
+Test 6: Checks that locate returns error if passed negative elements.
+    string i[5] = {"", "soap", "water", "can", "tie"};
+    assert(locate(i, -1, "soap") == -1);  
+    cerr << "Test succeeded :)" << endl;
+
+Test 7: Checks that case matters in locate.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris", "donald" };
+    assert(locate(h, 7, "aSa") == -1);
+    cerr << "Test succeeded :)" << endl;
+
+Test 8: Checks that locate returns smallest index of matching string to target if there are multiple.
+    string j[8] = { "nikki", "ron", "asa", "vivek", "", "chris", "ron","donald"};
+    assert(locate(j, 7, "ron") == 1);
+    cerr << "Test succeeded :)" << endl;
+
+** locationOfMax Function ** 
+
+Test 9: Checks that locationOfMax function returns correct index.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris","donald"};
+    assert(locationOfMax(h, 7) == 3);
+    cerr << "Test succeeded" << endl;
+
+Test 10: Checks that locationOfMax returns error if passed 0 (does not examine any elements in array) OR negative elements.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris","donald"};
+    assert(locationOfMax(h, 0) == -1);
+    assert(locationOfMax(h, -3) == -1);
+    cerr << "Test succeeded" << endl;
+
+Test 11: Checks that locationOfMax returns correct index for the elements passed (not the whole array).
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris","donald"};
+    assert(locationOfMax(h, 3) == 1);
+    cerr << "Test succeeded" << endl;
+
+Test 12: Checks that locationOfMax returns smallest index if more than one such string fits criteria.
+    string a[3] = {"abba", "abba", "abba"};
+    assert(locationOfMax(a, 3) == 0);
+    cerr << "Test succeeded" << endl;
+
+Test 13: Checks that case matters in locationOfMax.
+    string a[3] = {"ABba", "Abba", "abba"};
+    assert(locationOfMax(a, 3) == 2);
+    cerr << "Test succeeded" << endl;
+
+** circleLeft function ** 
+Test 14: Checks that circleLeft moves items after pos up an index and sets element at pos to end. Also checks that returns error if passed negative elements.
+    string g[4] = { "nikki", "ron", "chris", "tim" };
+    assert(circleLeft(g, 4, 1) == 1 && g[1] == "chris" && g[3] == "ron");
+    assert(circleLeft(g, -2, 1) == -1);
+    cerr << "Test succeeded" << endl;
+
+Test 15: Checks that circleLeft only goes from pos to end of element passed into function (not in the whole array), returns original pos of item moved to the end, and works correctly.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris","donald"};
+    assert(circleLeft(h, 5, 2) == 2 && h[0] == "nikki" && h[1] == "ron" && h[2] == "vivek" && h[3] == "" && h[4] == "asa" && h[5] == "chris");
+    cerr << "Test succeeded" << endl;
+
+Test 16: Checks that circleLeft returns error if n (number of elements passed) is 0, and that no changes were made to the array.
+    string g[4] = { "nikki", "ron", "chris", "tim" };
+    assert(circleLeft(g, 0, 1) == -1 && g[0] == "nikki" && g[1] == "ron" && g[2] == "chris" && g[3] == "tim");
+    cerr << "Test succeeded" << endl;
+
+Test 17: Checks that circleLeft returns error if pos if not between 0 and n-1 (if pos is an invalid position) when n is valid.
+    string g[4] = { "nikki", "ron", "chris", "tim" };
+    assert(circleLeft(g, 4, -3) == -1 && g[0] == "nikki" && g[1] == "ron" && g[2] == "chris" && g[3] == "tim");
+    assert(circleLeft(g, 4, 4) == -1 && g[0] == "nikki" && g[1] == "ron" && g[2] == "chris" && g[3] == "tim");
+    assert(circleLeft(g, 4, 5) == -1 && g[0] == "nikki" && g[1] == "ron" && g[2] == "chris" && g[3] == "tim");
+    cerr << "Test succeeded" << endl;
+
+** enumerateRuns Function ** 
+Test 18: Checks that enumerateRuns returns the correct number of the sequence.
+    string d[5] = { "ron", "ron", "ron", "chris", "chris" };
+    assert(enumerateRuns(d, 5) == 2);
+    cerr << "Test succeeded" << endl;
+
+Test 19: Checks that enumerateRuns gives error if given negative elements, and returns 0 if given 0 elements.
+    string d[5] = { "ron", "ron", "ron", "chris", "chris" };
+    assert(enumerateRuns(d, -1) == -1);
+    assert(enumerateRuns(d, 0) == 0);
+    cerr << "Test succeeded" << endl;
+
+Test 20: Checks that enumerateRuns returns correct number, even if a previous string (that is NOT consecutive) is equal to a later string.
+    string d[9] = {"chris", "doug", "tim", "tim", "vivek", "vivek", "vivek", "tim", "tim"};
+    assert(enumerateRuns(d, 9) == 5);
+    cerr << "Test succeeded" << endl;
+
+** flip Function ** 
+Test 21: Checks that flip function returns n and works as expected.
+    string f[3] = { "vivek", "asa", "tim" };
+    assert(flip(f, 3) == 3 && f[0] == "tim" && f[2] == "vivek");
+    cerr << "Test succeeded" << endl;
+
+Test 22: Checks that flip function returns error if given negative elements, and returns 0 (n) if given 0 elements, AND does not change the array passed.
+    string f[3] = { "vivek", "asa", "tim" };
+    assert(flip(f, -5) == -1 && f[0] == "vivek" && f[1] == "asa" && f[2] == "tim");
+    assert(flip(f, 0) == 0 && f[0] == "vivek" && f[1] == "asa" && f[2] == "tim");
+    cerr << "Test succeeded" << endl;
+
+Test 23: Checks that flip function only changes the number of elements in array as passed into the function as n, and works with odd numbers. 
+    string f[5] = { "vivek", "asa", "tim", "sam", "bob" };
+    assert(flip(f, 3) == 3 && f[0] == "tim" && f[1] == "asa" && f[2] == "vivek" && f[4] == "bob");
+    cerr << "Test succeeded" << endl;
+
+Test 24: Checks that no error come up if n is passed as 1 (and array essentially goes unchanged) in flip function.
+    string f[5] = { "vivek", "asa", "tim", "sam", "bob" };
+    assert(flip(f, 1) == 1 && f[0] == "vivek" && f[1] == "asa" && f[2] == "tim" && f[4] == "bob");
+    cerr << "Test succeeded" << endl;
+
+Test 23: Checks that flip function works for even numbers.
+    string f[5] = { "vivek", "asa", "tim", "sam", "bob" };
+    assert(flip(f, 2) == 2 && f[0] == "asa" && f[1] == "vivek" && f[2] == "tim" && f[3] == "sam");
+    cerr << "Test succeeded" << endl;
+
+** locateDifference Function ** 
+Test 24: Checks that locateDifference returns the right position.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris", "donald" };
+    string g[4] = { "nikki", "ron", "chris", "tim" };
+    assert(locateDifference(h, 4, g, 4) == 2);
+    cerr << "Test succeeded" << endl;
+
+Test 25: Checks that locateDifference returns error if either n1 or n2 is negative.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris", "donald" };
+    string g[4] = { "nikki", "ron", "chris", "tim" };
+    assert(locateDifference(h, -2, g, 4) == -1);
+    assert(locateDifference(h, 4, g, -1) == -1);
+    cerr << "Test succeeded" << endl;
+
+Test 26: Checks that locateDifference returns 0 if n1 or n2 is 0.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris", "donald" };
+    string g[4] = { "nikki", "ron", "chris", "tim" };
+    assert(locateDifference(h, 0, g, 4) == 0);
+    assert(locateDifference(h, 4, g, 0) == 0);
+    cerr << "Test succeeded" << endl;
+
+Test 27: Checks that locateDifference returns smallest of n1 and n2 if both match up until one ends.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris", "donald" };
+    string g[4] = { "nikki", "ron", "chris", "tim" };
+    assert(locateDifference(h, 2, g, 1) == 1);
+    cerr << "Test succeeded" << endl;
+
+Test 28: Checks that locateDifference returns value of n1 (and n2) if n1 == n2 and both match up until they end.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris", "donald" };
+    string g[4] = { "nikki", "ron", "chris", "tim" };
+    assert(locateDifference(h, 2, g, 2) == 2);
+    cerr << "Test succeeded" << endl;
+
+** subsequence Function **
+Test 29: Checks that subsequence returns value of correct index.
+    string names[10] = { "nikki", "ron", "tim", "vivek", "doug" };
+    string names1[10] = { "ron", "tim", "vivek" };
+    assert(subsequence(names, 5, names1, 3) == 1);  // returns 1
+    cerr << "Test succeeded" << endl;
+
+Test 30: Checks that subsequence returns an error if does not find subsequence of a2 in a1.
+    string names[10] = { "nikki", "ron", "tim", "vivek", "doug" };
+    string names2[10] = { "nikki", "vivek" };
+    assert(subsequence(names, 4, names2, 2) == -1);  // returns -1
+    cerr << "Test succeeded" << endl;
+
+Test 31: Checks that subsequence returns error if a1 or a2 have negative elements passed, or if a2 has more elements passed than a1. 
+    string names[10] = { "nikki", "ron", "tim", "vivek", "doug" };
+    string names1[10] = { "ron", "tim", "vivek" };
+    assert(subsequence(names, -1, names1, 3) == -1);
+    assert(subsequence(names, 5, names1, -2) == -1);
+    assert(subsequence(names, 2, names1, 3) == -1);
+    cerr << "Test succeeded" << endl;
+
+Test 32: Checks that subsequence returns 0 if there are no elements in a2, and there are either no elements or positive elements in a1. Also checks that returns error if no elements in a2 and negative elements in a1.
+    string names[10] = { "nikki", "ron", "tim", "vivek", "doug" };
+    string names1[10] = { "ron", "tim", "vivek" };
+    assert(subsequence(names, 0, names1, 0) == 0);
+    assert(subsequence(names, 3, names1, 0) == 0);
+    assert(subsequence(names, -3, names1, 0) == -1);
+    cerr << "Test succeeded" << endl;
+
+Test 33: Checks that subsequence returns the correct index of consecutive subsequence if it appears later in a1.
+    string names[10] = { "nikki", "ron", "bob", "vivek", "doug", "sam", "ron", "tim", "vivek" };
+    string names1[10] = { "ron", "tim", "vivek" };
+    assert(subsequence(names, 9, names1, 3) == 6);
+    cerr << "Test succeeded" << endl;
+
+Test 34: Checks that subsequence only returns a valid index if the subsequence appears consecutively.
+    string names[10] = { "nikki", "ron", "bob", "vivek", "doug", "sam", "ron", "tim", "vivek" };
+    string names1[10] = { "ron", "tim", "vivek" };
+    assert(subsequence(names, 6, names1, 3) == -1);
+    cerr << "Test succeeded" << endl;
+
+Test 35: Checks that subsequence returns start of index of earliest occurring subsequence when there are multiple.
+    string names[10] = { "nikki", "ron", "tim", "vivek", "doug", "sam", "ron", "tim", "vivek" };
+    string names1[10] = { "ron", "tim", "vivek" };
+    assert(subsequence(names, 6, names1, 3) == 1);
+    cerr << "Test succeeded" << endl;
+
+Test 36: Checks that subsequence runs and returns -1 if subsequence ends in a1 without being complete (in matching a2).
+    string names[10] = { "nikki", "ron", "bob", "vivek", "doug", "sam", "ron", "tim", "vivek" };
+    string names1[10] = { "ron", "tim", "vivek" };
+    assert(subsequence(names, 8, names1, 3) == -1);
+    cerr << "Test succeeded" << endl;
+
+** locateAny Function **
+Test 37: Checks that if passed negative or 0 elements for n1 or n2, locateAny returns error.
+    string h[7] = { "nikki", "ron", "asa", "vivek", "", "chris", "donald" };
+    string f[3] = { "vivek", "asa", "tim" };
+    assert(locateAny(h, 0, f, 3) == -1);
+    assert(locateAny(h, -1, f, 3) == -1);
+    assert(locateAny(h, 3, f, 0) == -1);
+    assert(locateAny(h, 3, f, -2) == -1);
+    cerr << "Test succeeded" << endl;
+
+Test 38: Checks that returns smallest index of a1, where the element at that index matches an element in a2. Also checks that returns -1 if no matches found.
+    string names[10] = { "nikki", "ron", "tim", "vivek", "doug" };
+    string set1[10] = { "donald", "doug", "vivek", "ron" };
+    assert(locateAny(names, 5, set1, 4) == 1);  // returns 1 (a1 has "ron" there)
+    string set2[10] = { "chris", "asa" };
+    assert(locateAny(names, 5, set2, 2) == -1);  // returns -1 (a1 has none)
+    cerr << "Test succeeded" << endl;
+
+** divide Function **
+Test 39: Checks that divide returns correct pos. Also does this if one element in array equals divider.
+    string cand[6] = { "donald", "asa", "ron", "vivek", "chris", "nikki" };
+    assert(divide(cand, 6, "doug") == 3);  //  returns 3
+    string cand2[4] = { "ron", "vivek", "asa", "tim" };
+    assert(divide(cand2, 4, "tim") == 2);  //  returns 2   
+    cerr << "Test succeeded" << endl;
+
+Test 40: Checks that if divide is passed negative elements, it returns an error.
+    string cand2[4] = { "ron", "vivek", "asa", "tim" };
+    assert(divide(cand2, -2, "tim") == -1);
+    cerr << "Test succeeded" << endl;
+
+Test 41: Checks that if divide is passed no elements (0), it returns n (0).
+    string cand2[4] = { "ron", "vivek", "asa", "tim" };
+    assert(divide(cand2, 0, "tim") == 0);
+    cerr << "Test succeeded" << endl;
+
+Test 42: Checks if divide returns correct pos and sorts array right if have more than 1 element in array equal to divider.
+    string cand2[5] = { "ron", "vivek", "asa", "tim", "tim" };
+    assert(divide(cand2, 5, "tim") == 2 && cand2[2] == "tim" && cand2[3] == "tim" && cand2[4] == "vivek");
+    //cand2[4], or the last element in array, should equal "vivek" since it is the only element greater than divider
+    cerr << "Test succeeded" << endl;
+
+Test 43: Checks that divide returns n if no elements in array are >= divider.
+    string c[4] = { "ma", "can", "tu", "do" };
+    assert(divide(c, 4, "va") == 4);
+    cerr << "Test succeeded" << endl;
+
+Test 44: Checks that returns position 0 if all elements in array are >= divider (first position where element is >= divider).
+    string c[4] = { "ma", "can", "tu", "do" };
+    assert(divide(c, 4, "app") == 0);
+    cerr << "Test succeeded" << endl;
+
+
+
