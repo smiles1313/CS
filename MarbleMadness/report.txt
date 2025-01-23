@@ -1,0 +1,33 @@
+Project 3 Report - CS32
+
+
+-------- Description of Control Flow for interaction b/w avatar and goodie --------
+ 
+To note, I decided to have my avatar outside of the list where all of my other actors are. So, in StudentWorld, there is a pointer to type Avatar as a private member variable, which is accessible through a getter function. 
+
+I also have an abstract class called "Obtain" derived from Actor. The derived classes from "Obtain" include crystals and the different types of goodies. In "Obtain"'s doSomething() function, it detects if the player is on the same spot as the (crystal or) goodie by comparing the goodie's X and Y, and getting the avatar's X and Y (through getWorld() and the getterFunction for the avatar pointer). 
+
+	Obtain's do Something()'s pseudocode:
+	
+	If the player is on the same spot as the goodie
+		call StudentWorld's increaseScore by m_points
+		set Goodie to dead (StudentWorld's removeDeadActors() function removes it this tick)
+		call StudentWorld to play m_sound
+		doAdditionalEffect()
+
+m_points is a private member variable of Obtain with a setter method. In each derived goodie class, its constructor calls the setPoints method to set it to the specific amount of bonus points the player receives for obtaining that specific goodie.
+
+m_sound is set to SOUND_GOT_GOODIE in Obtain's constructor (since it plays for BOTH crystals and goodies).
+
+And doAdditionalEffect() is a pure virtual function in Obtain. All 3 goodie types/subclasses (and the crystal subclass) reimplement this function to do an action specific to that goodie.
+	E.g.  The ExtraLifeGoodie calls StudentWorld to increment the player's lives by 1.
+	      The RestoreHealthGoodie calls StudentWorld (and then its getPlayer()) to restore the player's health (by calling setHitPoints(20)).
+	      The AmmoGoodie calls StudentWorld (and then its getPlayer()) to add 20 ammo (by calling addPeas(20).
+
+
+
+-------- Other design decisions and assumptions made --------
+
+~ I decided to store all my actors (except for the avatar) in an STL list.
+
+~ It was not specified whether or not a pea could overlap with an object (that takes damage or just obstructs) it for a tick before setting itself to dead. So, I decided to allow it in my design.
